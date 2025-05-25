@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>بازی ریاضی - مساحت و محیط</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      direction: rtl;
+      background-color: #f0f8ff;
+    }
+
+    #gameArea {
+      position: relative;
+      width: 400px;
+      height: 300px;
+      border: 3px dashed #008080;
+      margin: 20px auto;
+      background-color: #e6f7ff;
+    }
+
+    #character {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: red;
+      border-radius: 50%;
+    }
+
+    #info {
+      margin-top: 20px;
+    }
+
+    label {
+      margin: 0 10px;
+    }
+
+    input {
+      width: 50px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>بازی آموزشی مساحت و محیط</h2>
+
+<div>
+  <label>طول: <input type="number" id="lengthInput" value="300"></label>
+  <label>عرض: <input type="number" id="widthInput" value="200"></label>
+  <button onclick="updateRectangle()">اعمال تغییر</button>
+</div>
+
+<div id="gameArea">
+  <div id="character"></div>
+</div>
+
+<div id="info">
+  <p id="areaText">مساحت: ...</p>
+  <p id="perimeterText">محیط: ...</p>
+</div>
+
+<script>
+  const character = document.getElementById("character");
+  const gameArea = document.getElementById("gameArea");
+
+  let length = 300;
+  let width = 200;
+  let x = 0, y = 0;
+  let direction = "right";
+  let speed = 2;
+
+  function updateRectangle() {
+    length = parseInt(document.getElementById("lengthInput").value);
+    width = parseInt(document.getElementById("widthInput").value);
+
+    gameArea.style.width = length + "px";
+    gameArea.style.height = width + "px";
+
+    const area = length * width;
+    const perimeter = 2 * (length + width);
+
+    document.getElementById("areaText").textContent = "مساحت: " + area + " پیکسل مربع";
+    document.getElementById("perimeterText").textContent = "محیط: " + perimeter + " پیکسل";
+
+    x = 0;
+    y = 0;
+    direction = "right";
+  }
+
+  function moveCharacter() {
+    if (direction === "right") {
+      x += speed;
+      if (x >= length - 30) direction = "down";
+    } else if (direction === "down") {
+      y += speed;
+      if (y >= width - 30) direction = "left";
+    } else if (direction === "left") {
+      x -= speed;
+      if (x <= 0) direction = "up";
+    } else if (direction === "up") {
+      y -= speed;
+      if (y <= 0) direction = "right";
+    }
+
+    character.style.left = x + "px";
+    character.style.top = y + "px";
+
+    requestAnimationFrame(moveCharacter);
+  }
+
+  updateRectangle();
+  moveCharacter();
+</script>
+
+</body>
+</html>
