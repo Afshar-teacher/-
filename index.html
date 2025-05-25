@@ -2,145 +2,120 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>محاسبه مساحت</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>محاسبه‌ی مساحت شکل‌ها</title>
   <style>
     body {
-      font-family: Tahoma;
-      background-color: #fef6e4;
+      font-family: sans-serif;
       direction: rtl;
+      background-color: #f0f8ff;
       text-align: center;
       padding: 40px;
+      font-size: 24px;
     }
     h1 {
-      color: #ff5c8a;
+      color: #004080;
+      font-size: 32px;
+      margin-bottom: 20px;
     }
     select, input, button {
-      font-size: 18px;
-      padding: 10px;
-      margin: 10px;
-      border-radius: 8px;
-      border: 1px solid #aaa;
+      margin: 15px;
+      padding: 14px;
+      font-size: 22px;
+      border-radius: 12px;
+      border: 2px solid #ccc;
     }
     button {
-      background-color: #4caf50;
+      background-color: #00bfff;
       color: white;
-      border: none;
       cursor: pointer;
     }
-    #inputs input {
-      display: block;
-      margin: 5px auto;
-      width: 200px;
+    button:hover {
+      background-color: #0099cc;
     }
     #result {
-      font-size: 20px;
-      margin-top: 20px;
+      margin-top: 30px;
+      font-size: 28px;
       color: #333;
     }
   </style>
 </head>
 <body>
 
-  <h1>محاسبه مساحت اشکال هندسی</h1>
+  <h1>محاسبه‌ی مساحت شکل‌های هندسی</h1>
 
-  <label for="shape">شکل را انتخاب کن:</label>
+  <label>شکل را انتخاب کن:</label><br>
   <select id="shape" onchange="showInputs()">
-    <option value="">-- انتخاب --</option>
-    <option value="rectangle">مستطیل</option>
     <option value="square">مربع</option>
+    <option value="rectangle">مستطیل</option>
     <option value="triangle">مثلث</option>
     <option value="circle">دایره</option>
-    <option value="parallelogram">متوازی‌الاضلاع</option>
+    <option value="rhombus">لوزی</option>
     <option value="trapezoid">ذوزنقه</option>
-  </select>
+  </select><br>
 
   <div id="inputs"></div>
 
-  <button onclick="calculate()">محاسبه مساحت</button>
-  <div id="result"></div>
+  <button onclick="calculateArea()">محاسبه مساحت</button>
+  <p id="result"></p>
 
   <script>
     function showInputs() {
       const shape = document.getElementById("shape").value;
-      const inputsDiv = document.getElementById("inputs");
-      inputsDiv.innerHTML = "";
+      const div = document.getElementById("inputs");
+      let html = "";
 
-      switch (shape) {
-        case "rectangle":
-          inputsDiv.innerHTML = `
-            <input type="number" id="length" placeholder="طول">
-            <input type="number" id="width" placeholder="عرض">
-          `;
-          break;
-        case "square":
-          inputsDiv.innerHTML = `<input type="number" id="side" placeholder="طول ضلع">`;
-          break;
-        case "triangle":
-          inputsDiv.innerHTML = `
-            <input type="number" id="base" placeholder="قاعده">
-            <input type="number" id="height" placeholder="ارتفاع">
-          `;
-          break;
-        case "circle":
-          inputsDiv.innerHTML = `<input type="number" id="radius" placeholder="شعاع">`;
-          break;
-        case "parallelogram":
-          inputsDiv.innerHTML = `
-            <input type="number" id="base" placeholder="قاعده">
-            <input type="number" id="height" placeholder="ارتفاع">
-          `;
-          break;
-        case "trapezoid":
-          inputsDiv.innerHTML = `
-            <input type="number" id="top" placeholder="قاعده بالا">
-            <input type="number" id="bottom" placeholder="قاعده پایین">
-            <input type="number" id="height" placeholder="ارتفاع">
-          `;
-          break;
+      if (shape === "square") {
+        html = 'طول ضلع: <input id="a">';
+      } else if (shape === "rectangle") {
+        html = 'طول: <input id="a"> عرض: <input id="b">';
+      } else if (shape === "triangle") {
+        html = 'پایه: <input id="a"> ارتفاع: <input id="h">';
+      } else if (shape === "circle") {
+        html = 'شعاع: <input id="r">';
+      } else if (shape === "rhombus") {
+        html = 'قطر بزرگ: <input id="d1"> قطر کوچک: <input id="d2">';
+      } else if (shape === "trapezoid") {
+        html = 'پایین: <input id="a"> بالا: <input id="b"> ارتفاع: <input id="h">';
       }
+
+      div.innerHTML = html;
     }
 
-    function calculate() {
+    function calculateArea() {
       const shape = document.getElementById("shape").value;
       let area = 0;
 
-      switch (shape) {
-        case "rectangle":
-          const l = +document.getElementById("length").value;
-          const w = +document.getElementById("width").value;
-          area = l * w;
-          break;
-        case "square":
-          const s = +document.getElementById("side").value;
-          area = s * s;
-          break;
-        case "triangle":
-          const b1 = +document.getElementById("base").value;
-          const h1 = +document.getElementById("height").value;
-          area = (b1 * h1) / 2;
-          break;
-        case "circle":
-          const r = +document.getElementById("radius").value;
-          area = 3.14 * r * r;
-          break;
-        case "parallelogram":
-          const b2 = +document.getElementById("base").value;
-          const h2 = +document.getElementById("height").value;
-          area = b2 * h2;
-          break;
-        case "trapezoid":
-          const t = +document.getElementById("top").value;
-          const b3 = +document.getElementById("bottom").value;
-          const h3 = +document.getElementById("height").value;
-          area = ((t + b3) * h3) / 2;
-          break;
-        default:
-          alert("لطفاً یک شکل انتخاب کن.");
-          return;
+      if (shape === "square") {
+        const a = parseFloat(document.getElementById("a").value);
+        area = a * a;
+      } else if (shape === "rectangle") {
+        const a = parseFloat(document.getElementById("a").value);
+        const b = parseFloat(document.getElementById("b").value);
+        area = a * b;
+      } else if (shape === "triangle") {
+        const a = parseFloat(document.getElementById("a").value);
+        const h = parseFloat(document.getElementById("h").value);
+        area = (a * h) / 2;
+      } else if (shape === "circle") {
+        const r = parseFloat(document.getElementById("r").value);
+        area = Math.PI * r * r;
+      } else if (shape === "rhombus") {
+        const d1 = parseFloat(document.getElementById("d1").value);
+        const d2 = parseFloat(document.getElementById("d2").value);
+        area = (d1 * d2) / 2;
+      } else if (shape === "trapezoid") {
+        const a = parseFloat(document.getElementById("a").value);
+        const b = parseFloat(document.getElementById("b").value);
+        const h = parseFloat(document.getElementById("h").value);
+        area = ((a + b) * h) / 2;
       }
 
-      document.getElementById("result").innerText = `مساحت برابر است با: ${area} واحد مربع`;
+      document.getElementById("result").innerHTML = "مساحت: " + area.toFixed(2);
     }
+
+    // نمایش ورودی‌های اولیه
+    showInputs();
   </script>
 
 </body>
